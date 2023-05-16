@@ -1,4 +1,4 @@
-# Martello Implementation
+# Description
 
 Martello is a reference implementation of a micro monolith that serves as an example of Go microservices architecture that integrates Domain-Driven Design (DDD), Command and Query Responsibility Segregation (CQRS), and Event Sourcing principles. This repo should provide with a reliable reference for creating custom services based on these principles while minimizing external dependencies and leveraging the Go standard library.
 
