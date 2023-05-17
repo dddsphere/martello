@@ -61,10 +61,10 @@ func (app *App) Run() (err error) {
 	}
 
 	app.Log().Infof("%s started", app.Name())
-	defer app.Log().Infof("%s stoped", app.Name())
+	defer app.Log().Infof("%s stopped", app.Name())
 
 	app.Supervisor.AddTasks(
-		app.http.StartTask(context.Background()),
+		app.http.Start,
 	)
 
 	return app.Supervisor.Wait()
