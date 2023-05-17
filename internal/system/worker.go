@@ -1,6 +1,7 @@
 package system
 
 import (
+	"context"
 	"fmt"
 	"hash/fnv"
 	"strings"
@@ -15,15 +16,15 @@ type (
 		Name() string
 		Log() log.Logger
 		Cfg() *config.Config
-		Setup() error
-		Start() error
-		Teardown() error
-		Stop() error
+		Init(ctx context.Context) error
+		Start(ctx context.Context) error
+		Teardown(ctx context.Context) error
+		Stop(ctx context.Context) error
 	}
 )
 
 type (
-	SimpleWorker struct {
+	BaseWorker struct {
 		name     string
 		log      log.Logger
 		cfg      *config.Config
@@ -32,48 +33,48 @@ type (
 	}
 )
 
-func NewWorker(name string, cfg *config.Config, log log.Logger) *SimpleWorker {
+func NewWorker(name string, cfg *config.Config, log log.Logger) *BaseWorker {
 	name = GenName(name, "worker")
 
-	return &SimpleWorker{
+	return &BaseWorker{
 		name: name,
 		cfg:  cfg,
 		log:  log,
 	}
 }
 
-func (sw SimpleWorker) Name() string {
+func (sw BaseWorker) Name() string {
 	return sw.name
 }
 
-func (sw SimpleWorker) SetName(name string) {
+func (sw BaseWorker) SetName(name string) {
 	sw.name = name
 }
 
-func (sw SimpleWorker) Log() log.Logger {
+func (sw BaseWorker) Log() log.Logger {
 	return sw.log
 }
 
-func (sw SimpleWorker) Cfg() *config.Config {
+func (sw BaseWorker) Cfg() *config.Config {
 	return sw.Cfg()
 }
 
-func (sw SimpleWorker) Setup() error {
-	sw.Log().Info("Setup")
+func (sw BaseWorker) Init(ctx context.Context) error {
+	sw.Log().Info("Init")
 	return nil
 }
 
-func (sw SimpleWorker) Start() error {
+func (sw BaseWorker) Start(ctc context.Context) error {
 	sw.Log().Info("Start")
 	return nil
 }
 
-func (sw SimpleWorker) Teardown() error {
+func (sw BaseWorker) Teardown(ctx context.Context) error {
 	sw.Log().Info("Teardown")
 	return nil
 }
 
-func (sw SimpleWorker) Stop() error {
+func (sw BaseWorker) Stop(ctx context.Context) error {
 	sw.Log().Info("Stop")
 	return nil
 }
