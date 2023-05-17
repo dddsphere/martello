@@ -50,6 +50,10 @@ func (app *App) EnableSupervisor() {
 	app.Supervisor = system.NewSupervisor(name, app.Cfg(), app.Log(), true)
 }
 
+func (app *App) Init(ctx context.Context) {
+	//app.subs.Add(a)
+}
+
 func (app *App) Run() (err error) {
 	err = app.startSubsystems()
 	if err != nil {

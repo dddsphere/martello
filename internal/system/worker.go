@@ -56,7 +56,7 @@ func (sw BaseWorker) Log() log.Logger {
 }
 
 func (sw BaseWorker) Cfg() *config.Config {
-	return sw.Cfg()
+	return sw.cfg
 }
 
 func (sw BaseWorker) Init(ctx context.Context) error {
