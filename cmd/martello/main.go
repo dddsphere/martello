@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	name      = "martello"
-	namespace = "MTL"
+	name = "martello"
+	env  = "mtl"
 )
 
 var (
@@ -17,11 +17,11 @@ var (
 )
 
 func main() {
-	app := mapp.NewApp(name, namespace, log)
+	app := mapp.NewApp(name, env, log)
 
 	err := app.Run()
 	if err != nil {
-		.Errorf("%s exit error: %w", err)
+		log.Errorf("%s exit error: %w", err)
 		os.Exit(1)
 	}
 }
