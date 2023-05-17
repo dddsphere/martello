@@ -31,10 +31,6 @@ func (srv *Server) SetRouter(router http.Handler) {
 	srv.router = router
 }
 
-func (srv *Server) StartTask(ctx context.Context) system.Task {
-	return srv.Start
-}
-
 func (srv *Server) Start(ctx context.Context) error {
 	srv.Server = http.Server{
 		Addr:    srv.Address(),
