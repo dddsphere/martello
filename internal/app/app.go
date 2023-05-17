@@ -5,20 +5,12 @@ import (
 
 	"github.com/dddsphere/martello/internal/config"
 	"github.com/dddsphere/martello/internal/log"
+	"github.com/dddsphere/martello/internal/system"
 )
 
 type app struct {
-	cfg        *config.Config
-	log 			 log.Logger
-	subsystems []Subsystem
-}
-
-func (app *app) Cfg() *config.Config {
-	return app.cfg
-}
-
-func (app *app) Log() log.Logger {
-	return app.log
+	system.Worker
+	subs []Subsystem
 }
 
 type Subsystem interface {
@@ -28,6 +20,6 @@ type Subsystem interface {
 }
 
 type Service interface {
-	Cfg() config.Config
-	Log() log.Logger()
+	Cfg() *config.Config
+	Log() log.Logger
 }
