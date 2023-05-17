@@ -17,7 +17,7 @@ func TestGet(t *testing.T) {
 		t.Errorf("Test setup error: %s", err.Error())
 	}
 
-	// Setup a config handler.
+	// Init a config handler.
 	cfg := Config{}
 	cfg.SetNamespace("CFG")
 
@@ -45,7 +45,7 @@ func TestGetNoReload(t *testing.T) {
 		t.Errorf("Test setup error: %s", err.Error())
 	}
 
-	// Setup a config handler.
+	// Init a config handler.
 	cfg := Config{}
 	cfg.SetNamespace("CFG")
 
@@ -73,7 +73,7 @@ func TestGetReload(t *testing.T) {
 		t.Errorf("Test setup error: %s", err.Error())
 	}
 
-	// Setup a config handler.
+	// Init a config handler.
 	cfg := Config{}
 	cfg.SetNamespace("CFG")
 
@@ -100,7 +100,7 @@ func TestLoadEnvVars(t *testing.T) {
 		t.Errorf("Test setup error: %s", err.Error())
 	}
 
-	// Setup a config handler.
+	// Init a config handler.
 	cfg := Config{}
 	cfg.SetNamespace("CFG")
 
