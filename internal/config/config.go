@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -107,6 +106,7 @@ func (cfg *Config) ValOrDef(key string, defVal string, reload ...bool) (value st
 
 // loadNamespaceEnvVars load all visible environment variables that belongs to the namespace.
 func (cfg *Config) loadNamespaceEnvVars() {
+
 	cfg.values = cfg.ReadNamespaceEnvVars()
 }
 
