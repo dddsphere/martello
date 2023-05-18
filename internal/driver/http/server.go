@@ -68,12 +68,12 @@ func (srv *Server) Start(ctx context.Context) error {
 }
 
 func (srv *Server) Address() string {
-	host := srv.Cfg().ValOrDef("http.server.host", "0.0.0.0")
-	port := srv.Cfg().ValAsInt("http.server.port", 8080)
+	host := srv.Cfg().GetString("http.server.host")
+	port := srv.Cfg().GetInt("http.server.port")
 	return fmt.Sprintf("%s:%d", host, port)
 }
 
 func (srv *Server) ShutdownTimeout() time.Duration {
-	secs := time.Duration(srv.Cfg().ValAsInt("http.server.shutdown.timeout.secs", 12))
+	secs := time.Duration(srv.Cfg().GetInt("http.server.shutdown.timeout.secs"))
 	return secs * time.Second
 }
