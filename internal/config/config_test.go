@@ -1,8 +1,10 @@
-package config
+package config_test
 
 import (
 	"os"
 	"testing"
+
+	"github.com/dddsphere/martello/internal/config"
 )
 
 // TestGet default (no reload)
@@ -18,7 +20,7 @@ func TestGet(t *testing.T) {
 	}
 
 	// Init a config handler.
-	cfg := Config{}
+	cfg := config.Config{}
 	cfg.SetNamespace("CFG")
 
 	// Read and process environment variables.
@@ -46,7 +48,7 @@ func TestGetNoReload(t *testing.T) {
 	}
 
 	// Init a config handler.
-	cfg := Config{}
+	cfg := config.Config{}
 	cfg.SetNamespace("CFG")
 
 	// Read and process environment variables.
@@ -74,7 +76,7 @@ func TestGetReload(t *testing.T) {
 	}
 
 	// Init a config handler.
-	cfg := Config{}
+	cfg := config.Config{}
 	cfg.SetNamespace("CFG")
 
 	// Read and process environment variables.
@@ -101,11 +103,11 @@ func TestLoadEnvVars(t *testing.T) {
 	}
 
 	// Init a config handler.
-	cfg := Config{}
+	cfg := config.Config{}
 	cfg.SetNamespace("CFG")
 
 	// Read and process environment variables.
-	res := cfg.readNamespaceEnvVars()
+	res := cfg.ReadNamespaceEnvVars()
 
 	// Assert result.
 	host, ok1 := res["server.host"]
