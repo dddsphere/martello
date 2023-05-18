@@ -141,7 +141,7 @@ func (cfg *Config) keyify(name string) string {
 	// Without namespace prefix
 	wnsp := strings.Join(split[1:], ".")
 	// Dot separated lowercased
-	dots := strings.ToLower(strings.Replace(wnsp, "_", ".", 0))
+	dots := strings.ToLower(strings.Replace(wnsp, "_", ".", 1))
 	return dots
 }
 
