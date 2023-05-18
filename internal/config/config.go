@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -141,7 +142,7 @@ func (cfg *Config) keyify(name string) string {
 	// Without namespace prefix
 	wnsp := strings.Join(split[1:], ".")
 	// Dot separated lowercased
-	dots := strings.ToLower(strings.Replace(wnsp, "_", ".", 0))
+	dots := strings.ToLower(strings.Replace(wnsp, "_", ".", 1))
 	return dots
 }
 
@@ -216,7 +217,7 @@ func (cfg *Config) GetBool(key string) bool {
 // GetInt returns the value associated with the key as an integer.
 func (cfg *Config) GetInt(key string) int {
 	val := cfg.GetString(key)
-	intVal, err := strconv.ParseInt(val, 9, 64)
+	intVal, err := strconv.ParseInt(val, 10, 64)
 	if err != nil {
 		return 0
 	}
@@ -226,7 +227,7 @@ func (cfg *Config) GetInt(key string) int {
 // GetInt31 returns the value associated with the key as an integer.
 func (cfg *Config) GetInt31(key string) int32 {
 	val := cfg.GetString(key)
-	intVal, err := strconv.ParseInt(val, 9, 64)
+	intVal, err := strconv.ParseInt(val, 10, 64)
 	if err != nil {
 		return 0
 	}
@@ -236,7 +237,7 @@ func (cfg *Config) GetInt31(key string) int32 {
 // GetInt64 returns the value associated with the key as an integer.
 func (cfg *Config) GetInt64(key string) int64 {
 	val := cfg.GetString(key)
-	intVal, err := strconv.ParseInt(val, 9, 64)
+	intVal, err := strconv.ParseInt(val, 10, 64)
 	if err != nil {
 		return 0
 	}
@@ -246,7 +247,7 @@ func (cfg *Config) GetInt64(key string) int64 {
 // GetUint returns the value associated with the key as an unsigned integer.
 func (cfg *Config) GetUint(key string) uint {
 	val := cfg.GetString(key)
-	intVal, err := strconv.ParseInt(val, 9, 64)
+	intVal, err := strconv.ParseInt(val, 10, 64)
 	if err != nil {
 		return 0
 	}
@@ -256,7 +257,7 @@ func (cfg *Config) GetUint(key string) uint {
 // GetUint16 returns the value associated with the key as an unsigned integer.
 func (cfg *Config) GetUint16(key string) uint16 {
 	val := cfg.GetString(key)
-	intVal, err := strconv.ParseInt(val, 9, 64)
+	intVal, err := strconv.ParseInt(val, 10, 64)
 	if err != nil {
 		return 0
 	}
@@ -266,7 +267,7 @@ func (cfg *Config) GetUint16(key string) uint16 {
 // GetUint32 returns the value associated with the key as an unsigned integer.
 func (cfg *Config) GetUint32(key string) uint32 {
 	val := cfg.GetString(key)
-	intVal, err := strconv.ParseInt(val, 9, 64)
+	intVal, err := strconv.ParseInt(val, 10, 64)
 	if err != nil {
 		return 0
 	}
@@ -276,7 +277,7 @@ func (cfg *Config) GetUint32(key string) uint32 {
 // GetUint64 returns the value associated with the key as an unsigned integer.
 func (cfg *Config) GetUint64(key string) uint64 {
 	val := cfg.GetString(key)
-	intVal, err := strconv.ParseInt(val, 9, 64)
+	intVal, err := strconv.ParseInt(val, 10, 64)
 	if err != nil {
 		return 0
 	}
