@@ -57,18 +57,8 @@ func (sw BaseWorker) Cfg() *config.Config {
 	return sw.cfg
 }
 
-func (sw BaseWorker) Init(ctx context.Context) error {
-	sw.Log().Info("Init")
-	return nil
-}
-
 func (sw BaseWorker) Start(ctc context.Context) error {
 	sw.Log().Info("Start")
-	return nil
-}
-
-func (sw BaseWorker) Teardown(ctx context.Context) error {
-	sw.Log().Info("Teardown")
 	return nil
 }
 
@@ -76,6 +66,12 @@ func (sw BaseWorker) Stop(ctx context.Context) error {
 	sw.Log().Info("Stop")
 	return nil
 }
+
+type (
+	BaseService struct {
+		*BaseWorker
+	}
+)
 
 func GenName(name, defName string) string {
 	if strings.Trim(name, " ") == "" {

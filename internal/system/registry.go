@@ -9,6 +9,7 @@ import (
 
 type (
 	registry struct {
+		mu           sync.Mutex
 		httpHandlers []http.Handler
 		grpcServers  []*grpc.Server
 	}
@@ -31,9 +32,13 @@ func Instance() *registry {
 }
 
 func (r *registry) AddHTTPHandler(h http.Handler) {
+	r.mu.Lock()
 	r.httpHandlers = append(r.httpHandlers, h)
+	r.mu.Unlock()
 }
 
 func (r *registry) AddGRPCServer(s *grpc.Server) {
+	r.mu.Lock()
 	r.grpcServers = append(r.grpcServers, s)
+	r.mu.Unlock()
 }
