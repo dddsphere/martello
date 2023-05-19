@@ -16,9 +16,7 @@ type (
 		Name() string
 		Log() log.Logger
 		Cfg() *config.Config
-		Init(ctx context.Context) error
 		Start(ctx context.Context) error
-		Teardown(ctx context.Context) error
 		Stop(ctx context.Context) error
 	}
 )
