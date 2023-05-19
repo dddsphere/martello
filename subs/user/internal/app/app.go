@@ -3,8 +3,12 @@ package app
 import (
 	"context"
 	"fmt"
+	"net/http"
 
-	"github.com/dddsphere/martello/internal/driver/http"
+	"google.golang.org/grpc"
+
+	h "github.com/dddsphere/martello/internal/driver/http"
+	"github.com/dddsphere/martello/subs/user"
 
 	"github.com/dddsphere/martello/internal/config"
 	"github.com/dddsphere/martello/internal/log"
@@ -14,7 +18,7 @@ import (
 type App struct {
 	system.Worker
 	system.Supervisor
-	http *http.Server
+	http *h.Server
 	subs system.Subs
 }
 
@@ -23,7 +27,7 @@ func NewApp(name, namespace string, log log.Logger) (app *App) {
 
 	app = &App{
 		Worker: system.NewWorker(name, cfg, log),
-		http:   http.NewServer("http-server", cfg, log),
+		http:   h.NewServer("http-server", cfg, log),
 	}
 
 	app.EnableSupervisor()
@@ -49,7 +53,7 @@ func (app *App) EnableSupervisor() {
 }
 
 func (app *App) Init(ctx context.Context) {
-	//app.subs.Add(a)
+	app.subs.Add(user.User{})
 }
 
 func (app *App) Run() (err error) {
@@ -79,4 +83,12 @@ func (app *App) startSubsystems() error {
 	}
 
 	return nil
+}
+
+func (app *App) RegisterHTTPHandler(handler http.Handler) {
+	panic("not implemented yet")
+}
+
+func (app *App) RegisterGRPCServer(server *grpc.Server) {
+	panic("not implemented yet")
 }

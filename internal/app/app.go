@@ -3,6 +3,9 @@ package app
 import (
 	"context"
 	"fmt"
+	http2 "net/http"
+
+	"google.golang.org/grpc"
 
 	"github.com/dddsphere/martello/internal/driver/http"
 
@@ -80,4 +83,12 @@ func (app *App) startSubsystems() error {
 	}
 
 	return nil
+}
+
+func (app *App) RegisterHTTPHandler(h http2.Handler) {
+	panic("not implemented yet")
+}
+
+func (app *App) RegisterGRPCServer(srv *grpc.Server) {
+	panic("not implemented yet")
 }
