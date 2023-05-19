@@ -10,15 +10,14 @@ import (
 
 type (
 	User struct {
-		*system.BaseWorker
 		*system.BaseSystem
 	}
 )
 
 func (u *User) RegisterHTTPHandler(h http2.Handler) {
-	panic("not implemented yet")
+	u.Log().Infof("No registered HTTP handlers for %s", u.Name())
 }
 
 func (u *User) RegisterGRPCServer(srv grpc.Server) {
-	panic("not implemented yet")
+	u.Log().Infof("No registered gRPC servers for %s", u.Name())
 }
