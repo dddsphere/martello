@@ -3,9 +3,6 @@ package system
 import (
 	"context"
 	"sync"
-
-	"github.com/dddsphere/martello/internal/config"
-	"github.com/dddsphere/martello/internal/log"
 )
 
 type (
@@ -32,8 +29,18 @@ func (ss *Subs) All() []System {
 }
 
 type (
-	Service interface {
-		Cfg() *config.Config
-		Log() log.Logger
+	BaseSystem struct {
 	}
 )
+
+func NewSystem() *BaseSystem {
+	return &BaseSystem{}
+}
+
+func (bs *BaseSystem) Init(ctx context.Context, s Service) error {
+	return nil
+}
+
+func (bs *BaseSystem) Shutdown(ctx context.Context, s Service) error {
+	return nil
+}
