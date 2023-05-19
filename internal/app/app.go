@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"fmt"
-	"sync"
 
 	"github.com/dddsphere/martello/internal/driver/http"
 
@@ -16,7 +15,7 @@ type App struct {
 	system.Worker
 	system.Supervisor
 	http *http.Server
-	subs Subsystems
+	subs system.Subs
 }
 
 func NewApp(name, namespace string, log log.Logger) (app *App) {
@@ -25,7 +24,7 @@ func NewApp(name, namespace string, log log.Logger) (app *App) {
 	app = &App{
 		Worker: system.NewWorker(name, cfg, log),
 		http:   http.NewServer("http-server", cfg, log),
-		subs:   Subsystems{},
+		subs:   system.Subs{},
 	}
 
 	app.EnableSupervisor()
@@ -74,7 +73,7 @@ func (app *App) startSubsystems() error {
 	ctx := app.Supervisor.Context()
 
 	for _, sub := range app.subs.All() {
-		err := sub.Start(ctx, app)
+		err := sub.Init(ctx, app)
 		if err != nil {
 			return err
 		}
@@ -82,33 +81,3 @@ func (app *App) startSubsystems() error {
 
 	return nil
 }
-
-type (
-	Subsystem interface {
-		Setup(context.Context, Service) error
-		Start(context.Context, Service) error
-		Shutdown(context.Context, Service) error
-	}
-
-	Subsystems struct {
-		mu   sync.Mutex
-		list []Subsystem
-	}
-)
-
-func (ss *Subsystems) Add(s Subsystem) {
-	ss.mu.Lock()
-	ss.list = append(ss.list, s)
-	ss.mu.Unlock()
-}
-
-func (ss *Subsystems) All() []Subsystem {
-	return ss.list
-}
-
-type (
-	Service interface {
-		Cfg() *config.Config
-		Log() log.Logger
-	}
-)
