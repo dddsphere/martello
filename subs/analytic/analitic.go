@@ -1,4 +1,4 @@
-package user
+package analytic
 
 import (
 	"net/http"

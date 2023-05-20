@@ -1,4 +1,4 @@
-package user
+package catalog
 
 import (
 	"net/http"

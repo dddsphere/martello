@@ -16,8 +16,8 @@ type (
 		Name() string
 		Log() log.Logger
 		Cfg() *config.Config
-		Start(ctx context.Context) error
-		Stop(ctx context.Context) error
+		//Start(ctx context.Context) error
+		//Stop(ctx context.Context) error
 	}
 )
 
@@ -66,12 +66,6 @@ func (sw BaseWorker) Stop(ctx context.Context) error {
 	sw.Log().Info("Stop")
 	return nil
 }
-
-type (
-	BaseService struct {
-		*BaseWorker
-	}
-)
 
 func GenName(name, defName string) string {
 	if strings.Trim(name, " ") == "" {

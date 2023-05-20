@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	mapp "github.com/dddsphere/martello/internal/app"
-	mlog "github.com/dddsphere/martello/internal/log"
+	a "github.com/dddsphere/martello/internal/app"
+	l "github.com/dddsphere/martello/internal/log"
 )
 
 const (
@@ -13,11 +13,11 @@ const (
 )
 
 var (
-	log mlog.Logger = mlog.NewLogger(mlog.LogLevel.Info, false)
+	log l.Logger = l.NewLogger(l.LogLevel.Info, false)
 )
 
 func main() {
-	app := mapp.NewApp(name, env, log)
+	app := a.NewApp(name, env, log)
 
 	err := app.Run()
 	if err != nil {
