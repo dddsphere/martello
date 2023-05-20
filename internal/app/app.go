@@ -68,7 +68,7 @@ func (app *App) Init(ctx context.Context) {
 func (app *App) Start(ctx context.Context) error {
 	app.Log().Infof("%s starting...", app.Name())
 	defer app.Log().Infof("%s stopped", app.Name())
-
+  
 	err := app.startSubs()
 	if err != nil {
 		return err
@@ -117,6 +117,20 @@ func (app *App) RegisterHTTPHandler(http.Handler) {
 
 func (app *App) RegisterGRPCServer(srv *grpc.Server) {
 	app.Log().Infof("No registered gRPC servers for %s", app.Name())
+}
+
+// Worker interface
+
+func (app *App) Name() string {
+	return app.Worker.Name()
+}
+
+func (app *App) Cfg() *config.Config {
+	return app.Worker.Cfg()
+}
+
+func (app *App) Log() log.Logger {
+	return app.Worker.Log()
 }
 
 // Worker interface
