@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"sync"
 
 	"google.golang.org/grpc"
 
@@ -20,6 +21,7 @@ import (
 )
 
 type App struct {
+	sync.Mutex
 	system.Worker
 	system.Supervisor
 	http *h.Server
@@ -52,20 +54,22 @@ func (app *App) Run() (err error) {
 }
 
 func (app *App) Init(ctx context.Context) {
-	app.subs.Add(analytic.Service{})
-	app.subs.Add(cart.Service{})
-	app.subs.Add(catalog.Service{})
-	app.subs.Add(order.Service{})
-	app.subs.Add(user.Service{})
-	app.subs.Add(user.Service{})
-	app.subs.Add(warehouse.Service{})
+	app.AddSub(analytic.Service{})
+	app.AddSub(cart.Service{})
+	app.AddSub(catalog.Service{})
+	app.AddSub(order.Service{})
+	app.AddSub(user.Service{})
+	app.AddSub(user.Service{})
+	app.AddSub(warehouse.Service{})
+
+	app.initSubs()
 }
 
 func (app *App) Start(ctx context.Context) error {
 	app.Log().Infof("%s starting...", app.Name())
 	defer app.Log().Infof("%s stopped", app.Name())
 
-	err := app.startSubsystems()
+	err := app.startSubs()
 	if err != nil {
 		return err
 	}
@@ -80,11 +84,23 @@ func (app *App) Start(ctx context.Context) error {
 	return app.Supervisor.Wait()
 }
 
-func (app *App) startSubsystems() error {
+func (app *App) AddSub(sub system.System) {
+	app.Lock()
+	app.subs.Add(sub)
+	app.Unlock()
+}
+
+func (app *App) initSubs() {
+	for _, sub := range app.subs.All() {
+		sub.Init(app.Cfg(), app.Log())
+	}
+}
+
+func (app *App) startSubs() error {
 	ctx := app.Supervisor.Context()
 
 	for _, sub := range app.subs.All() {
-		err := sub.Init(ctx, app)
+		err := sub.Start(ctx, app)
 		if err != nil {
 			return err
 		}

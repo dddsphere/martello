@@ -26,6 +26,11 @@ func NewService(name string, cfg *config.Config, log log.Logger) *BaseService {
 	}
 }
 
+func (bs *BaseService) Init(cfg *config.Config, log log.Logger) {
+	bs.cfg = cfg
+	bs.log = log
+}
+
 type IgnoreUnimplementedRegistration struct{}
 
 var _ Service = (*IgnoreUnimplementedRegistration)(nil)

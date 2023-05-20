@@ -10,8 +10,10 @@ import (
 
 type (
 	System interface {
-		Init(context.Context, Service) error
-		Shutdown(context.Context, Service) error
+		Init(cfg *config.Config, log log.Logger)
+		Start(context.Context, Service) error
+		Stop(context.Context) error
+		Shutdown(context.Context) error
 	}
 
 	Subs struct {
@@ -42,12 +44,12 @@ func NewSystem(name string, cfg *config.Config, log log.Logger) *BaseSystem {
 	}
 }
 
-func (bs *BaseSystem) Init(ctx context.Context, s Service) error {
+func (bs *BaseSystem) Start(ctx context.Context, s Service) error {
 	bs.Log().Infof("Default init triggered")
 	return nil
 }
 
-func (bs *BaseSystem) Shutdown(ctx context.Context, s Service) error {
+func (bs *BaseSystem) Shutdown(ctx context.Context) error {
 	bs.Log().Infof("Default shutdown triggered")
 	return nil
 }

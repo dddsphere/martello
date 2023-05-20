@@ -16,8 +16,8 @@ type (
 		Name() string
 		Log() log.Logger
 		Cfg() *config.Config
-		Start(ctx context.Context) error
-		Stop(ctx context.Context) error
+		//Start(ctx context.Context) error
+		//Stop(ctx context.Context) error
 	}
 )
 
