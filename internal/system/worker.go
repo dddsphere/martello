@@ -67,12 +67,6 @@ func (sw BaseWorker) Stop(ctx context.Context) error {
 	return nil
 }
 
-type (
-	BaseService struct {
-		*BaseWorker
-	}
-)
-
 func GenName(name, defName string) string {
 	if strings.Trim(name, " ") == "" {
 		return fmt.Sprintf("%s-%s", defName, nameSufix())

@@ -10,7 +10,6 @@ import (
 
 type (
 	System interface {
-		Worker
 		Init(context.Context, Service) error
 		Shutdown(context.Context, Service) error
 	}

@@ -11,6 +11,12 @@ import (
 	h "github.com/dddsphere/martello/internal/driver/http"
 	"github.com/dddsphere/martello/internal/log"
 	"github.com/dddsphere/martello/internal/system"
+	"github.com/dddsphere/martello/subs/analytic"
+	"github.com/dddsphere/martello/subs/cart"
+	"github.com/dddsphere/martello/subs/catalog"
+	"github.com/dddsphere/martello/subs/order"
+	"github.com/dddsphere/martello/subs/user"
+	"github.com/dddsphere/martello/subs/warehouse"
 )
 
 type App struct {
@@ -46,12 +52,13 @@ func (app *App) Run() (err error) {
 }
 
 func (app *App) Init(ctx context.Context) {
-	//app.subs.Add(user.User{})
-	//app.subs.Add(cart.Cart{})
-	//app.subs.Add(catalog.Catalog{})
-	//app.subs.Add(order.Order{})
-	//app.subs.Add(user.User{})
-	//app.subs.Add(warehouse.Warehouse{})
+	app.subs.Add(analytic.Service{})
+	app.subs.Add(cart.Service{})
+	app.subs.Add(catalog.Service{})
+	app.subs.Add(order.Service{})
+	app.subs.Add(user.Service{})
+	app.subs.Add(user.Service{})
+	app.subs.Add(warehouse.Service{})
 }
 
 func (app *App) Start(ctx context.Context) error {
@@ -89,11 +96,11 @@ func (app *App) startSubsystems() error {
 // Service interface
 
 func (app *App) RegisterHTTPHandler(http.Handler) {
-	panic("not implemented yet")
+	app.Log().Infof("No registered HTTP handlers for %s", app.Name())
 }
 
 func (app *App) RegisterGRPCServer(srv *grpc.Server) {
-	panic("not implemented yet")
+	app.Log().Infof("No registered gRPC servers for %s", app.Name())
 }
 
 // Worker interface

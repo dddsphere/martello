@@ -53,7 +53,7 @@ func (app *App) EnableSupervisor() {
 }
 
 func (app *App) Init(ctx context.Context) {
-	app.subs.Add(user.User{})
+	app.subs.Add(user.Service{})
 }
 
 func (app *App) Run() (err error) {
