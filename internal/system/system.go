@@ -38,18 +38,26 @@ type (
 	}
 )
 
-func NewSystem(name string, cfg *config.Config, log log.Logger) *BaseSystem {
+func NewSystem(name string, opts ...Option) *BaseSystem {
 	return &BaseSystem{
-		BaseWorker: NewWorker(name, cfg, log),
+		BaseWorker: NewWorker(name, opts...),
 	}
 }
 
+func (bs *BaseSystem) SetCfg(cfg *config.Config) {
+	bs.cfg = cfg
+}
+
+func (bs *BaseSystem) SetLog(log log.Logger) {
+	bs.log = log
+}
+
 func (bs *BaseSystem) Start(ctx context.Context, s Service) error {
-	bs.Log().Infof("Default init triggered")
+	bs.Log().Infof("%s default init", bs.Name())
 	return nil
 }
 
 func (bs *BaseSystem) Shutdown(ctx context.Context) error {
-	bs.Log().Infof("Default shutdown triggered")
+	bs.Log().Infof("%s default shutdown", bs.Name())
 	return nil
 }
