@@ -1,0 +1,101 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: User Service
+  description: User service OpenAPI definition
+  contact:
+    name: Adrian PK
+    url: https://adrianpk.com/
+servers:
+  - url: https://{hostname}/api/v1
+    variables:
+      hostname:
+        default: localhost
+security:
+  - bearerAuth: []
+
+paths:
+  /cmd/{command}:
+    post:
+      operationId: dispatch
+      parameters:
+        - in: path
+          name: command
+          schema:
+            type: string
+          required: true
+          description: Command to be executed
+      requestBody:
+        description: Dispatch commands
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/SignUpUser'
+#                       - $ref: '#/components/schemas/SignInUser'
+      #                 - $ref: '#/components/schemas/SignOutUser'
+      responses:
+        '204':
+          description: user
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+#  /cmd/sign-up-user:
+#    post:
+#      operationId: signUpUser
+#      requestBody:
+#        description: Sign up a user
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/SignUpUser'
+#      responses:
+#        '204':
+#          description: user
+#        default:
+#          description: unexpected error
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    SignUpUser:
+      type: object
+      required: [username, email, emailConfirmation, password]
+      properties:
+        username:
+          type: string
+          example: "username"
+        email:
+          type: string
+          example: "username@somehost.me"
+        emailConfirmation:
+          type: string
+          example: "username@somehost.me"
+        password:
+          type: string
+          example: "ho0xZP2vu1PuTJN"
+
+    Error:
+      type: object
+      required:
+        - slug
+        - message
+      properties:
+        slug:
+          type: string
+        message:
+          type: string
