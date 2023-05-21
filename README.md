@@ -11,6 +11,10 @@ A code generator to develop in another repository is envisioned to be developed 
 - **Event Sourcing**: Capture every state change as an immutable event to enable precise auditing, temporal querying, and the ability to rebuild state at any given point.
 - **Dependency Minimization**: Strive to minimize external dependencies by relying primarily on the functionality provided by the Go standard library for simplicity, efficiency, and ease of maintenance. The goal is to ensure that the generated code is self-contained. Any common structures or reusable components, such as struct embeddings, will be generated within the `internal` package of the project, avoiding the need to import additional packages from outside of the generated codebase.
 
+At its core, this monolith is designed to operate as a single executable, providing convenience in local development environments and production scenarios where extensive load scaling is not required. However, its architectural design also enables the option of operating as a group of microservices, working together harmoniously.
+
+This dual nature will allow the monolith to serve as a cohesive unit by default, while retaining the architectural flexibility to smoothly transition into separate microservices so when the need arises, each service can be individually horizontally scaled out.
+
 [TopSpin](https://github.com/dddsphere/topspin) and its generator will eventually be modeled after this implementation. The goal is to leverage the principles and design patterns demonstrated in this reference implementation to shape the development of TopSpin and its associated code generator. By aligning with this implementation, we aim to ensure consistency, maintainability, and adherence to best practices.
 
 ## Usage
