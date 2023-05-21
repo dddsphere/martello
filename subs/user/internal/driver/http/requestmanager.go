@@ -22,7 +22,9 @@ type (
 
 func NewRequestManager(cfg *config.Config, log log.Logger) (rm *RequestManager) {
 	return &RequestManager{
-		BaseWorker: system.NewWorker("request-manager", cfg, log),
+		BaseWorker: system.NewWorker("request-manager",
+			system.WithConfig(cfg),
+			system.WithLogger(log)),
 	}
 }
 

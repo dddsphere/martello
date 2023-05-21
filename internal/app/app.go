@@ -32,9 +32,11 @@ func NewApp(name, namespace string, log log.Logger) (app *App) {
 	cfg := config.Load(namespace)
 
 	app = &App{
-		Worker: system.NewWorker(name, cfg, log),
-		http:   h.NewServer("http-server", cfg, log),
-		subs:   system.Subs{},
+		Worker: system.NewWorker(name,
+			system.WithConfig(cfg),
+			system.WithLogger(log)),
+		http: h.NewServer("http-server", cfg, log),
+		subs: system.Subs{},
 	}
 
 	app.EnableSupervisor()
@@ -54,13 +56,12 @@ func (app *App) Run() (err error) {
 }
 
 func (app *App) Init(ctx context.Context) {
-	app.AddSub(analytic.Service{})
-	app.AddSub(cart.Service{})
-	app.AddSub(catalog.Service{})
-	app.AddSub(order.Service{})
-	app.AddSub(user.Service{})
-	app.AddSub(user.Service{})
-	app.AddSub(warehouse.Service{})
+	app.AddSub(analytic.NewService())
+	app.AddSub(cart.NewService())
+	app.AddSub(catalog.NewService())
+	app.AddSub(order.NewService())
+	app.AddSub(user.NewService())
+	app.AddSub(warehouse.NewService())
 
 	app.initSubs()
 }

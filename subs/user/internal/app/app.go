@@ -18,8 +18,10 @@ func NewApp(name, namespace string, log log.Logger) (app *App) {
 	cfg := config.Load(namespace)
 
 	app = &App{
-		Worker: system.NewWorker(name, cfg, log),
-		http:   h.NewServer("http-server", cfg, log),
+		Worker: system.NewWorker(name,
+			system.WithConfig(cfg),
+			system.WithLogger(log)),
+		http: h.NewServer("http-server", cfg, log),
 	}
 
 	return app

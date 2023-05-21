@@ -31,33 +31,37 @@ type (
 	}
 )
 
-func NewWorker(name string, cfg *config.Config, log log.Logger) *BaseWorker {
+func NewWorker(name string, opts ...Option) *BaseWorker {
 	name = GenName(name, "worker")
 
-	return &BaseWorker{
+	bw := &BaseWorker{
 		name: name,
-		cfg:  cfg,
-		log:  log,
 	}
+
+	for _, opt := range opts {
+		opt(bw)
+	}
+
+	return bw
 }
 
-func (sw BaseWorker) Name() string {
+func (sw *BaseWorker) Name() string {
 	return sw.name
 }
 
-func (sw BaseWorker) SetName(name string) {
+func (sw *BaseWorker) SetName(name string) {
 	sw.name = name
 }
 
-func (sw BaseWorker) Log() log.Logger {
+func (sw *BaseWorker) Log() log.Logger {
 	return sw.log
 }
 
-func (sw BaseWorker) Cfg() *config.Config {
+func (sw *BaseWorker) Cfg() *config.Config {
 	return sw.cfg
 }
 
-func (sw BaseWorker) Start(ctc context.Context) error {
+func (sw *BaseWorker) Start(ctc context.Context) error {
 	sw.Log().Info("Start")
 	return nil
 }
@@ -65,6 +69,14 @@ func (sw BaseWorker) Start(ctc context.Context) error {
 func (sw BaseWorker) Stop(ctx context.Context) error {
 	sw.Log().Info("Stop")
 	return nil
+}
+
+func (bs *BaseWorker) SetCfg(cfg *config.Config) {
+	bs.cfg = cfg
+}
+
+func (bs *BaseWorker) SetLog(log log.Logger) {
+	bs.log = log
 }
 
 func GenName(name, defName string) string {
@@ -83,4 +95,20 @@ func hash(s string) string {
 	h := fnv.New32a()
 	h.Write([]byte(s))
 	return fmt.Sprintf("%d", h.Sum32())
+}
+
+type (
+	Option func(w *BaseWorker)
+)
+
+func WithConfig(cfg *config.Config) Option {
+	return func(svc *BaseWorker) {
+		svc.SetCfg(cfg)
+	}
+}
+
+func WithLogger(log log.Logger) Option {
+	return func(svc *BaseWorker) {
+		svc.SetLog(log)
+	}
 }
