@@ -23,7 +23,7 @@ type (
 
 func NewServer(name string, cfg *config.Config, log log.Logger) (server *Server) {
 	return &Server{
-		Worker: system.NewWorker(name, cfg, log),
+		Worker: system.NewWorker(name, system.WithConfig(cfg), system.WithLogger(log)),
 	}
 }
 

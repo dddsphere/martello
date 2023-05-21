@@ -14,6 +14,17 @@ type (
 	}
 )
 
+const (
+	name = "order-service"
+)
+
+func NewService(opts ...system.Option) *Service {
+	name := system.WithSuffix(name, 8)
+	return &Service{
+		BaseService: system.NewService(name, opts...),
+	}
+}
+
 func (s *Service) RegisterHTTPHandler(h http.Handler) {
 	s.Log().Infof("No registered HTTP handlers for %s", s.Name())
 }
