@@ -54,7 +54,7 @@ func NewSupervisor(name string, cfg *config.Config, log log.Logger, notify bool,
 	}
 
 	sv := &supervisor{
-		BaseWorker: NewWorker(name, cfg, log),
+		BaseWorker: NewWorker(name, WithConfig(cfg), WithLogger(log)),
 		tasks:      []Task{},
 		teardown:   []Teardown{},
 	}
