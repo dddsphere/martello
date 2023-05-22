@@ -1,7 +1,7 @@
 package entity
 
 import (
-	"github.com/dddsphere/martello/subs/user/internal/domain/vo"
+	"github.com/dddsphere/martello/internal/module/user/internal/domain/vo"
 )
 
 type (
