@@ -92,19 +92,39 @@ func (app *App) AddModule(sub system.Module) {
 }
 
 func (app *App) initModules() {
-	for _, sub := range app.modules.All() {
-		sub.Init(app.Cfg(), app.Log())
+	mods := app.modules.All()
+	wg := sync.WaitGroup{}
+	wg.Add(len(mods))
+
+	for _, mod := range app.modules.All() {
+		go func(m system.Module) {
+			m.Init(app.Cfg(), app.Log())
+			wg.Done()
+		}(mod)
 	}
+
+	wg.Wait()
 }
 
 func (app *App) startModules() error {
-	ctx := app.Supervisor.Context()
+	mods := app.modules.All()
+	wg := sync.WaitGroup{}
+	wg.Add(len(mods))
 
-	for _, sub := range app.modules.All() {
-		err := sub.Start(ctx, app)
-		if err != nil {
-			return err
-		}
+	ctx := app.Supervisor.Context()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	errCh := make(chan error)
+
+	for _, mod := range app.modules.All() {
+		go func(m system.Module) {
+			err := m.Start(ctx, app)
+			if err != nil {
+				errCh <- err
+				cancel()
+			}
+		}(mod)
 	}
 
 	return nil
