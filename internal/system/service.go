@@ -19,7 +19,7 @@ type (
 	}
 
 	BaseService struct {
-		*BaseSystem
+		*BaseModule
 	}
 )
 
@@ -33,7 +33,7 @@ func init() {
 
 func NewService(name string, opts ...Option) *BaseService {
 	return &BaseService{
-		BaseSystem: NewSystem(name, opts...),
+		BaseModule: NewSystem(name, opts...),
 	}
 }
 
