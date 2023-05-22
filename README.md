@@ -24,6 +24,21 @@ To use this reference implementation, follow the instructions below:
 1. Clone the repository: `git clone github.com/dddsphere/martello.git`
 2. Explore the different components and modules to understand the implementation.
 3. Adapt and modify the codebase according to your specific project requirements.
+4. `make run`
+
+```shell
+$ make run
+go run ./cmd/martello/main.go
+[INF] martello starting...
+[INF] analytic-service-42rg8ryt default init
+[INF] cart-service-ijwrqhan default init
+[INF] catalog-service-yolg1ij8 default init
+[INF] order-service-uyt44zva default init
+[INF] user-service-hqn2037y default init
+[INF] warehouse-service-77km5ltm default init
+[INF] martello started!
+[INF] http-server started listening at localhost:8080
+```
 
 
 ## License

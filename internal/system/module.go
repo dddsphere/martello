@@ -9,55 +9,55 @@ import (
 )
 
 type (
-	System interface {
+	Module interface {
 		Init(cfg *config.Config, log log.Logger)
 		Start(context.Context, Service) error
 		Stop(context.Context) error
 		Shutdown(context.Context) error
 	}
 
-	Subs struct {
+	Modules struct {
 		mu   sync.Mutex
-		list []System
+		list []Module
 	}
 )
 
-func (ss *Subs) Add(s System) {
-	ss.mu.Lock()
-	ss.list = append(ss.list, s)
-	ss.mu.Unlock()
+func (mm *Modules) Add(s Module) {
+	mm.mu.Lock()
+	mm.list = append(mm.list, s)
+	mm.mu.Unlock()
 }
 
-func (ss *Subs) All() []System {
-	return ss.list
+func (mm *Modules) All() []Module {
+	return mm.list
 }
 
 type (
-	BaseSystem struct {
+	BaseModule struct {
 		*BaseWorker
 	}
 )
 
-func NewSystem(name string, opts ...Option) *BaseSystem {
-	return &BaseSystem{
+func NewSystem(name string, opts ...Option) *BaseModule {
+	return &BaseModule{
 		BaseWorker: NewWorker(name, opts...),
 	}
 }
 
-func (bs *BaseSystem) SetCfg(cfg *config.Config) {
+func (bs *BaseModule) SetCfg(cfg *config.Config) {
 	bs.cfg = cfg
 }
 
-func (bs *BaseSystem) SetLog(log log.Logger) {
+func (bs *BaseModule) SetLog(log log.Logger) {
 	bs.log = log
 }
 
-func (bs *BaseSystem) Start(ctx context.Context, s Service) error {
+func (bs *BaseModule) Start(ctx context.Context, s Service) error {
 	bs.Log().Infof("%s default init", bs.Name())
 	return nil
 }
 
-func (bs *BaseSystem) Shutdown(ctx context.Context) error {
+func (bs *BaseModule) Shutdown(ctx context.Context) error {
 	bs.Log().Infof("%s default shutdown", bs.Name())
 	return nil
 }

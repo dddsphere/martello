@@ -11,21 +11,21 @@ import (
 	"github.com/dddsphere/martello/internal/config"
 	h "github.com/dddsphere/martello/internal/driver/http"
 	"github.com/dddsphere/martello/internal/log"
+	"github.com/dddsphere/martello/internal/module/analytic"
+	"github.com/dddsphere/martello/internal/module/cart"
+	"github.com/dddsphere/martello/internal/module/catalog"
+	"github.com/dddsphere/martello/internal/module/order"
+	"github.com/dddsphere/martello/internal/module/user"
+	"github.com/dddsphere/martello/internal/module/warehouse"
 	"github.com/dddsphere/martello/internal/system"
-	"github.com/dddsphere/martello/subs/analytic"
-	"github.com/dddsphere/martello/subs/cart"
-	"github.com/dddsphere/martello/subs/catalog"
-	"github.com/dddsphere/martello/subs/order"
-	"github.com/dddsphere/martello/subs/user"
-	"github.com/dddsphere/martello/subs/warehouse"
 )
 
 type App struct {
 	sync.Mutex
 	system.Worker
 	system.Supervisor
-	http *h.Server
-	subs system.Subs
+	http    *h.Server
+	modules system.Modules
 }
 
 func NewApp(name, namespace string, log log.Logger) (app *App) {
@@ -35,8 +35,8 @@ func NewApp(name, namespace string, log log.Logger) (app *App) {
 		Worker: system.NewWorker(name,
 			system.WithConfig(cfg),
 			system.WithLogger(log)),
-		http: h.NewServer("http-server", cfg, log),
-		subs: system.Subs{},
+		http:    h.NewServer("http-server", cfg, log),
+		modules: system.Modules{},
 	}
 
 	app.EnableSupervisor()
@@ -56,21 +56,21 @@ func (app *App) Run() (err error) {
 }
 
 func (app *App) Init(ctx context.Context) {
-	app.AddSub(analytic.NewService())
-	app.AddSub(cart.NewService())
-	app.AddSub(catalog.NewService())
-	app.AddSub(order.NewService())
-	app.AddSub(user.NewService())
-	app.AddSub(warehouse.NewService())
+	app.AddModule(analytic.NewService())
+	app.AddModule(cart.NewService())
+	app.AddModule(catalog.NewService())
+	app.AddModule(order.NewService())
+	app.AddModule(user.NewService())
+	app.AddModule(warehouse.NewService())
 
-	app.initSubs()
+	app.initModules()
 }
 
 func (app *App) Start(ctx context.Context) error {
 	app.Log().Infof("%s starting...", app.Name())
 	defer app.Log().Infof("%s stopped", app.Name())
 
-	err := app.startSubs()
+	err := app.startModules()
 	if err != nil {
 		return err
 	}
@@ -85,22 +85,22 @@ func (app *App) Start(ctx context.Context) error {
 	return app.Supervisor.Wait()
 }
 
-func (app *App) AddSub(sub system.System) {
+func (app *App) AddModule(sub system.Module) {
 	app.Lock()
-	app.subs.Add(sub)
+	app.modules.Add(sub)
 	app.Unlock()
 }
 
-func (app *App) initSubs() {
-	for _, sub := range app.subs.All() {
+func (app *App) initModules() {
+	for _, sub := range app.modules.All() {
 		sub.Init(app.Cfg(), app.Log())
 	}
 }
 
-func (app *App) startSubs() error {
+func (app *App) startModules() error {
 	ctx := app.Supervisor.Context()
 
-	for _, sub := range app.subs.All() {
+	for _, sub := range app.modules.All() {
 		err := sub.Start(ctx, app)
 		if err != nil {
 			return err
