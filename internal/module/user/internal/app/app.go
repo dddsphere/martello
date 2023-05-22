@@ -11,7 +11,7 @@ type App struct {
 	system.Worker
 	system.Supervisor
 	http *h.Server
-	subs system.Subs
+	subs system.Modules
 }
 
 func NewApp(name, namespace string, log log.Logger) (app *App) {

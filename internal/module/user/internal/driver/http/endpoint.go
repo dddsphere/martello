@@ -1,8 +1,8 @@
 package http
 
 import (
+	"github.com/dddsphere/martello/internal/module/user/internal/domain/service"
 	"github.com/dddsphere/martello/internal/system"
-	"github.com/dddsphere/martello/subs/user/internal/domain/service"
 )
 
 type (
