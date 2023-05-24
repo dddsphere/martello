@@ -8,8 +8,6 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
-	"github.com/dddsphere/martello/internal/config"
-	"github.com/dddsphere/martello/internal/log"
 	"github.com/dddsphere/martello/internal/system"
 )
 
@@ -21,9 +19,9 @@ type (
 	}
 )
 
-func NewServer(name string, cfg *config.Config, log log.Logger) (server *Server) {
+func NewServer(name string, opts ...system.Option) (server *Server) {
 	return &Server{
-		Worker: system.NewWorker(name, system.WithConfig(cfg), system.WithLogger(log)),
+		Worker: system.NewWorker(name, opts...),
 	}
 }
 
