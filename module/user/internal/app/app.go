@@ -21,7 +21,9 @@ func NewApp(name, namespace string, log log.Logger) (app *App) {
 		Worker: system.NewWorker(name,
 			system.WithConfig(cfg),
 			system.WithLogger(log)),
-		http: h.NewServer("http-server", cfg, log),
+		http: h.NewServer("http-server",
+			system.WithConfig(cfg),
+			system.WithLogger(log)),
 	}
 
 	return app
