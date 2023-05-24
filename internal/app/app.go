@@ -11,13 +11,13 @@ import (
 	"github.com/dddsphere/martello/internal/config"
 	h "github.com/dddsphere/martello/internal/driver/http"
 	"github.com/dddsphere/martello/internal/log"
-	"github.com/dddsphere/martello/internal/module/analytic"
-	"github.com/dddsphere/martello/internal/module/cart"
-	"github.com/dddsphere/martello/internal/module/catalog"
-	"github.com/dddsphere/martello/internal/module/order"
-	"github.com/dddsphere/martello/internal/module/user"
-	"github.com/dddsphere/martello/internal/module/warehouse"
 	"github.com/dddsphere/martello/internal/system"
+	"github.com/dddsphere/martello/module/analytic"
+	"github.com/dddsphere/martello/module/cart"
+	"github.com/dddsphere/martello/module/catalog"
+	"github.com/dddsphere/martello/module/order"
+	"github.com/dddsphere/martello/module/user"
+	"github.com/dddsphere/martello/module/warehouse"
 )
 
 type App struct {
@@ -35,7 +35,9 @@ func NewApp(name, namespace string, log log.Logger) (app *App) {
 		Worker: system.NewWorker(name,
 			system.WithConfig(cfg),
 			system.WithLogger(log)),
-		http:    h.NewServer("http-server", cfg, log),
+		http: h.NewServer("http-server",
+			system.WithConfig(cfg),
+			system.WithLogger(log)),
 		modules: system.Modules{},
 	}
 
