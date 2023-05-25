@@ -5,13 +5,31 @@ import (
 )
 
 type (
-	Aggregate struct {
+	Aggregate interface {
+		ID
+		EventManager
+	}
+
+	BaseAggregate struct {
 		id   ID
 		name string
 	}
 )
 
-func (a *Aggregate) Name() string {
+type (
+	EventManager interface {
+		AddEvent(name string, payload any)
+		Events() Event
+		Reset()
+		Apply()
+	}
+
+	Event interface {
+		// TODO: Define functions
+	}
+)
+
+func (a *BaseAggregate) Name() string {
 	return a.name
 }
 
