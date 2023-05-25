@@ -8,7 +8,7 @@ import (
 
 type (
 	Catalog struct {
-		*domain.Aggregate
+		*domain.BaseAggregate
 		description    string
 		active         bool
 		releaseDate    time.Time
