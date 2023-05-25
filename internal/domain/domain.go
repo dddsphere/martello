@@ -1,12 +1,7 @@
 package domain
 
-import "github.com/google/uuid"
-
-type (
-	ID struct {
-		id   string
-		name string
-	}
+import (
+	"github.com/google/uuid"
 )
 
 type (
@@ -16,11 +11,28 @@ type (
 	}
 )
 
-func (i ID) ID() string {
+func (a *Aggregate) Name() string {
+	return a.name
+}
+
+type (
+	ID interface {
+		ID()
+		Name()
+		Equals(other ID) bool
+	}
+
+	Identifier struct {
+		id   string
+		name string
+	}
+)
+
+func (i *Identifier) ID() string {
 	return i.id
 }
 
-func (i ID) SetID(id string, force ...bool) {
+func (i *Identifier) SetID(id string, force ...bool) {
 	if !(len(force) > 0 && force[0]) {
 		return
 	}
@@ -28,7 +40,7 @@ func (i ID) SetID(id string, force ...bool) {
 	i.id = id
 }
 
-func (i ID) GenID(force ...bool) (ok bool) {
+func (i *Identifier) GenID(force ...bool) (ok bool) {
 	uid, err := uuid.NewUUID()
 	if err != nil {
 		return false
@@ -38,10 +50,14 @@ func (i ID) GenID(force ...bool) (ok bool) {
 	return true
 }
 
-func (a *Aggregate) Name() string {
-	return a.name
+func (i *Identifier) Name() string {
+	return i.name
 }
 
-func (a *Aggregate) SetName(name string) {
-	a.name = name
+func (i *Identifier) SetName(name string) {
+	i.name = name
+}
+
+func (i *Identifier) Equals(other *Identifier) bool {
+	return i.id == other.id
 }
