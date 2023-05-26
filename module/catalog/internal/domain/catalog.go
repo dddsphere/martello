@@ -3,15 +3,18 @@ package domain
 import (
 	"time"
 
+	"github.com/dddsphere/martello/internal/core"
 	"github.com/dddsphere/martello/internal/domain"
+	"github.com/dddsphere/martello/internal/event"
 )
 
 type (
 	Catalog struct {
 		*domain.BaseAggregate
+		regID          string
 		items          []Item
 		description    string
-		active         bool
+		status         string
 		releaseDate    time.Time
 		expirationDate time.Time
 	}
@@ -20,8 +23,16 @@ type (
 func NewCatalog(id string) *Catalog {
 	return &Catalog{
 		BaseAggregate: domain.NewAggregate(id, aggregates.Catalog),
-		items:         []Item{},
+		status:        status.Initialized.Name(),
 	}
+}
+
+func (c *Catalog) Init(regID string) (event.Event, error) {
+	c.AddEvent(status.Initialized.Name(), &CatalogInitialized{
+		RegID: regID,
+	})
+
+	return event.NewEvent(status.Initialized.Name(), c), nil
 }
 
 func (c *Catalog) Description() string {
@@ -32,12 +43,12 @@ func (c *Catalog) SetDescription(description string) {
 	c.description = description
 }
 
-func (c *Catalog) Active() bool {
-	return c.active
+func (c *Catalog) Status() string {
+	return c.status
 }
 
-func (c *Catalog) SetActive(active bool) {
-	c.active = active
+func (c *Catalog) SetStatus(status string) {
+	c.status = status
 }
 
 func (c *Catalog) ReleaseDate() time.Time {
@@ -70,7 +81,7 @@ func (c *Catalog) Empty() {
 
 type (
 	Item struct {
-		domain.ID
+		core.ID
 		description    string
 		active         bool
 		releaseDate    time.Time
