@@ -4,13 +4,13 @@ import (
 	"time"
 
 	"github.com/dddsphere/martello/internal/core"
-	"github.com/dddsphere/martello/internal/domain"
 	"github.com/dddsphere/martello/internal/event"
+	"github.com/dddsphere/martello/internal/eventsource"
 )
 
 type (
 	Catalog struct {
-		*domain.BaseAggregate
+		eventsource.BaseAggregate
 		regID          string
 		items          []Item
 		description    string
@@ -22,7 +22,7 @@ type (
 
 func NewCatalog(id string) *Catalog {
 	return &Catalog{
-		BaseAggregate: domain.NewAggregate(id, aggregates.Catalog),
+		BaseAggregate: eventsource.NewAggregate(aggregates.Catalog),
 		status:        status.Initialized.Name(),
 	}
 }

@@ -9,15 +9,18 @@ import (
 
 type (
 	Processor interface {
-		AddEvent(name string, payload any)
+		AddEvent(name string, payload Payload)
 		Events() map[string]Event
 		Reset()
 	}
 
 	Event interface {
 		core.ID
-		Payload() any
+		Payload() Payload
 		Timestamp() time.Time
+	}
+
+	Payload interface {
 	}
 
 	Base struct {
@@ -27,7 +30,7 @@ type (
 	}
 )
 
-func NewEvent(name string, payload any) *Base {
+func NewEvent(name string, payload Payload) *Base {
 	return &Base{
 		Identifier: core.NewIdentifier(name),
 		payload:    payload,
@@ -35,7 +38,7 @@ func NewEvent(name string, payload any) *Base {
 	}
 }
 
-func (b *Base) Payload() any { // payload should be a type
+func (b *Base) Payload() Payload { // payload should be a type
 	return b.payload
 }
 
