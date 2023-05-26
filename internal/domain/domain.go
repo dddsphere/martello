@@ -9,27 +9,27 @@ import (
 
 type (
 	Aggregate interface {
-		*core.ID
+		core.ID
 		event.Processor
 	}
 
 	BaseAggregate struct {
 		core.Identifier
-		sync.Map
+		*sync.Map
 	}
 )
 
-func NewAggregate(id, name string) *BaseAggregate {
-	return &BaseAggregate{
+func NewAggregate(name string) BaseAggregate {
+	return BaseAggregate{
 		Identifier: core.NewIdentifier(name),
 	}
 }
 
-func (ba *BaseAggregate) AddEvent(name string, payload any) {
+func (ba BaseAggregate) AddEvent(name string, payload event.Payload) {
 	ba.Store(name, payload)
 }
 
-func (ba *BaseAggregate) Events() map[string]event.Event {
+func (ba BaseAggregate) Events() map[string]event.Event {
 	events := make(map[string]event.Event)
 
 	ba.Map.Range(func(key, value interface{}) bool {
@@ -44,7 +44,7 @@ func (ba *BaseAggregate) Events() map[string]event.Event {
 	return events
 }
 
-func (ba *BaseAggregate) Reset() {
+func (ba BaseAggregate) Reset() {
 	ba.Map.Range(func(key, value interface{}) bool {
 		ba.Map.Delete(key)
 		return true
