@@ -14,18 +14,14 @@ type (
 	}
 
 	BaseAggregate struct {
-		id core.ID
+		core.Identifier
 		sync.Map
 	}
 )
 
-func (ba *BaseAggregate) Name() string {
-	return ba.id.Name()
-}
-
 func NewAggregate(id, name string) *BaseAggregate {
 	return &BaseAggregate{
-		id: core.NewIdentifier(name),
+		Identifier: core.NewIdentifier(name),
 	}
 }
 
@@ -49,13 +45,6 @@ func (ba *BaseAggregate) Events() map[string]event.Event {
 }
 
 func (ba *BaseAggregate) Reset() {
-	ba.Map.Range(func(key, value interface{}) bool {
-		ba.Map.Delete(key)
-		return true
-	})
-}
-
-func (ba *BaseAggregate) Apply() {
 	ba.Map.Range(func(key, value interface{}) bool {
 		ba.Map.Delete(key)
 		return true

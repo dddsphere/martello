@@ -12,7 +12,6 @@ type (
 		AddEvent(name string, payload any)
 		Events() map[string]Event
 		Reset()
-		Apply()
 	}
 
 	Event interface {
