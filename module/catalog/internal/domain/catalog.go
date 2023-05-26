@@ -9,6 +9,15 @@ import (
 type (
 	Catalog struct {
 		*domain.BaseAggregate
+		items          []Item
+		description    string
+		active         bool
+		releaseDate    time.Time
+		expirationDate time.Time
+	}
+
+	Item struct {
+		domain.ID
 		description    string
 		active         bool
 		releaseDate    time.Time
