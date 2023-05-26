@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 )
 
@@ -19,13 +21,15 @@ type (
 type (
 	EventManager interface {
 		AddEvent(name string, payload any)
-		Events() Event
+		Events() []Event
 		Reset()
 		Apply()
 	}
 
 	Event interface {
-		// TODO: Define functions
+		ID
+		Payload() any
+		Timestamp() time.Time
 	}
 )
 
