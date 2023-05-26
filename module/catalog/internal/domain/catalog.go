@@ -15,15 +15,14 @@ type (
 		releaseDate    time.Time
 		expirationDate time.Time
 	}
-
-	Item struct {
-		domain.ID
-		description    string
-		active         bool
-		releaseDate    time.Time
-		expirationDate time.Time
-	}
 )
+
+func NewCatalog(id string) *Catalog {
+	return &Catalog{
+		BaseAggregate: domain.NewAggregate(id, aggregates.Catalog),
+		items:         []Item{},
+	}
+}
 
 func (c *Catalog) Description() string {
 	return c.description
@@ -56,3 +55,25 @@ func (c *Catalog) ExpirationDate() time.Time {
 func (c *Catalog) SetExpirationDate(expirationDate time.Time) {
 	c.expirationDate = expirationDate
 }
+
+func (c *Catalog) AddItem(i *Item) {
+	panic("not implemented yet")
+}
+
+func (c *Catalog) RemoveItem(id string) {
+	panic("not implemented yet")
+}
+
+func (c *Catalog) Empty() {
+	panic("not implemented yet")
+}
+
+type (
+	Item struct {
+		domain.ID
+		description    string
+		active         bool
+		releaseDate    time.Time
+		expirationDate time.Time
+	}
+)
